@@ -1,0 +1,27 @@
+{
+  "name": "graphql-conf",
+  "version": "1.0.0",
+  "description": "Conférence GraphQL CGI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mathieugeissler/graphql-conf.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mathieugeissler/graphql-conf/issues"
+  },
+  "homepage": "https://github.com/mathieugeissler/graphql-conf#readme",
+  "dependencies": {
+    "apollo-datasource-rest": "^0.2.1",
+    "apollo-server": "^2.3.1",
+    "graphql": "^14.1.1",
+    "request": "^2.88.0",
+    "request-promise": "~4.2.2"
+  }
+}
