@@ -6,8 +6,6 @@ const API_URL = 'https://fr-cei-java-001.imfr.cgi.com/pp-order/api';
 // Type definitions define the "shape" of your data and specify
 // which ways the data can be fetched from the GraphQL server.
 const typeDefs = gql`
-# Comments in GraphQL are defined with the hash (#) symbol.
-
 type Plate {
     description: String
     lastUpdate: String
@@ -26,6 +24,54 @@ type Query {
   plateCategories: [PlateCategory]
   plates: [Plate]
   plateCategory(name: String): PlateCategory
+}
+
+type TodayOrder {
+    date: String
+    id: String,
+    ordered: Boolean,
+    _userOrders: [UserOrder]
+}
+
+type UserOrder {
+    username: String
+    id: String
+    email: String
+    phone: String
+    delivery: String
+    plateOrders: [PlateOrder]
+    comment: String
+}
+
+type PlateOrder {
+    number: Int,
+    _plate: Plate
+}
+
+input PlateInput {
+    description: String
+    lastUpdate: String
+    name: String
+    plateCategoryId: String
+    price: Float
+}
+
+input PlateOrderInput {
+    number: Int!
+    _plate: PlateInput
+}
+
+input UserOrderInput {
+    username: String!
+    email: String!
+    phone: String!
+    delivery: String!
+    plateOrders: [PlateOrderInput]
+    comment: String
+}
+
+type Mutation {
+  createOrder(input: UserOrderInput!) :  TodayOrder
 }
 `;
 
@@ -48,6 +94,18 @@ const resolvers = {
         plates : async (_source, args, ctx) => {
             const response = await rp(`${API_URL}/PlateCategories/${_source.name}/Plates`);
             return JSON.parse(response);
+        }
+    },
+    Mutation: {
+        createOrder: async (_source, args, ctx) => {
+            const options = {
+                url: `${API_URL}/Orders/userOrders`,
+                method: 'POST',
+                body: args.input,
+                json:true
+            };
+            const response = await rp(options);
+            return response;
         }
     }
 };
